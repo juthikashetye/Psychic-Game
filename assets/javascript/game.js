@@ -1,5 +1,5 @@
 const totalGuesses = 10;
-const alphabet = "abcdefghijklmnopqrstuvwxyz";
+const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 var winCounter = 0;
 var lossCounter = 0;
@@ -23,17 +23,27 @@ setInnerTextOfSpan(historySpan, historyString);
 
 function checkGuess() {
     //get user input
-    var userInput = event.key;
-    //if user input matches computer guess WIN!
-    if (userInput == computerAlphabet) {
-        processCorrectGuess();
-    } //if no match then the guess is wrong,
-    // process only new guesses
-    else if (!historyString.includes(userInput)) {
-        processNewIncorrectGuess(userInput);
-    } else {
-        processRepeatedGuess(userInput);
+    var userInput = validateKeys(event.key);
+
+    if (userInput != null) {
+        //if user input matches computer guess WIN!
+        if (userInput == computerAlphabet) {
+            processCorrectGuess();
+        } //if no match then the guess is wrong,
+        // process only new guesses
+        else if (!historyString.includes(userInput)) {
+            processNewIncorrectGuess(userInput);
+        } else {
+            processRepeatedGuess(userInput);
+        }
     }
+}
+
+function validateKeys(typedKey) {
+    if (!alphabet.includes(typedKey)) {
+        return null;
+    }
+    return typedKey.toLowerCase();
 }
 
 function processRepeatedGuess(guess) {
@@ -52,10 +62,9 @@ function processNewIncorrectGuess(guess) {
     //reduce guesses
     guessLeftCounter--;
     setInnerTextOfSpan(guessLeftSpan, guessLeftCounter)
-
     //if guesses reach 0 then user loses
     if (guessLeftCounter < 1) {
-        alert("You Lose , I had guessed : \"" + computerAlphabet + "\"");
+        // alert("You Lose , I had guessed : \"" + computerAlphabet + "\"");
         lossCounter++;
         setInnerTextOfSpan(lossSpan, lossCounter);
         startNewRound();
@@ -79,7 +88,6 @@ function startNewRound() {
     //display the new values on screen
     setInnerTextOfSpan(guessLeftSpan, guessLeftCounter);
     setInnerTextOfSpan(historySpan, historyString);
-
     //pick a new guess
     computerAlphabet = alphabet[Math.floor(Math.random() * alphabet.length)];
 }
