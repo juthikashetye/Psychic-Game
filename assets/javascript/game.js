@@ -5,7 +5,7 @@ var winCounter = 0;
 var lossCounter = 0;
 var guessLeftCounter = totalGuesses;
 var historyString = "";
-var computerAlphabet = alphabet[Math.floor(Math.random() * alphabet.length)];
+var computerAlphabet = alphabet[Math.floor(Math.random() * alphabet.length)].toLowerCase();
 
 var winSpan = document.querySelector('#winSpan');
 var lossSpan = document.querySelector('#lossSpan');
@@ -89,7 +89,7 @@ function startNewRound() {
     setInnerTextOfSpan(guessLeftSpan, guessLeftCounter);
     setInnerTextOfSpan(historySpan, historyString);
     //pick a new guess
-    computerAlphabet = alphabet[Math.floor(Math.random() * alphabet.length)];
+    computerAlphabet = alphabet[Math.floor(Math.random() * alphabet.length)].toLowerCase();
 }
 
 document.onkeypress = checkGuess;
